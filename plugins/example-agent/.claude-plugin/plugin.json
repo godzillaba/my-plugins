@@ -1,0 +1,5 @@
+{
+  "name": "example-agent",
+  "description": "An example agent plugin — clone this to make your own",
+  "version": "0.1.0"
+}

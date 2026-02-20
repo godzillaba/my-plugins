@@ -1,0 +1,23 @@
+{
+  "name": "godzillaba-plugins",
+  "owner": {
+    "name": "godzillaba"
+  },
+  "metadata": {
+    "description": "godzillaba's plugin marketplace"
+  },
+  "plugins": [
+    {
+      "name": "example-skill",
+      "source": "./plugins/example-skill",
+      "description": "An example skill plugin — clone this to make your own",
+      "version": "0.1.0"
+    },
+    {
+      "name": "example-agent",
+      "source": "./plugins/example-agent",
+      "description": "An example agent plugin — clone this to make your own",
+      "version": "0.1.0"
+    }
+  ]
+}
