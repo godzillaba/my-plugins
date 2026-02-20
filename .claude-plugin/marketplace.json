@@ -8,15 +8,9 @@
   },
   "plugins": [
     {
-      "name": "example-skill",
-      "source": "./plugins/example-skill",
-      "description": "An example skill plugin — clone this to make your own",
-      "version": "0.1.0"
-    },
-    {
-      "name": "example-agent",
-      "source": "./plugins/example-agent",
-      "description": "An example agent plugin — clone this to make your own",
+      "name": "mutest",
+      "source": "./plugins/mutest",
+      "description": "Run mutation testing on Solidity files.",
       "version": "0.1.0"
     }
   ]
