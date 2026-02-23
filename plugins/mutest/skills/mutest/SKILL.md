@@ -35,12 +35,12 @@ Remember the answers — do not prompt the user again during the run.
 
 **First iteration**: run with the user's file arguments:
 ```
-npx @godzillaba/mutest@1.3.4 $ARGUMENTS
+npx @godzillaba/mutest@latest $ARGUMENTS
 ```
 
 **Subsequent iterations** (only when loop-until-clean is enabled): run with **NO file arguments** to re-test existing mutants against the updated test suite:
 ```
-npx @godzillaba/mutest@1.3.4
+npx @godzillaba/mutest@latest
 ```
 
 > **CRITICAL**: Do NOT pass a file list on subsequent passes. Passing file arguments causes mutest to **regenerate** mutants from scratch via Gambit, destroying the previous `gambit_out/` state.
