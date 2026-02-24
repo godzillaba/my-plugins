@@ -1,4 +1,5 @@
 {
   "name": "mutest",
-  "description": "Run mutation testing on Solidity files."
+  "description": "Run mutation testing on Solidity files.",
+  "version": "1.0.0"
 }
