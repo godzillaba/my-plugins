@@ -25,7 +25,8 @@ Before launching anything, use AskUserQuestion to gather all decisions at once:
 
 1. **Auto-fix**: Should surviving mutants be automatically fixed by writing missing tests? (Yes / No)
 2. **Loop until clean**: If auto-fix is enabled, should we re-run mutest after fixes are applied, repeating until all mutants are killed or no more progress is made? (Yes / No)
-3. **Report path prefix**: Where should reports be written? Suggest a default of `mutation-report` in the project root. Reports will be written as `<prefix>-N.md` where N is the iteration number (starting at 1). For a single-pass run, only `<prefix>-1.md` is written.
+3. **Test command override**: Would you like to override the test command mutest uses? The default is `forge test --optimize false --threads 1 --root <workerDir>`. If yes, provide the command (it runs via `bash -c` with the worker directory as `cwd`). If no, leave blank to use the default.
+4. **Report path prefix**: Where should reports be written? Suggest a default of `mutation-report` in the project root. Reports will be written as `<prefix>-N.md` where N is the iteration number (starting at 1). For a single-pass run, only `<prefix>-1.md` is written.
 
 Remember the answers — do not prompt the user again during the run.
 
@@ -33,14 +34,16 @@ Remember the answers — do not prompt the user again during the run.
 
 ### 2a: Launch mutest
 
+If the user provided a test command override, append `-t '<cmd>'` to all mutest invocations below.
+
 **First iteration**: run with the user's file arguments:
 ```
-npx @godzillaba/mutest@latest $ARGUMENTS
+npx @godzillaba/mutest@latest $ARGUMENTS [-t '<cmd>']
 ```
 
 **Subsequent iterations** (only when loop-until-clean is enabled): run with **NO file arguments** to re-test existing mutants against the updated test suite:
 ```
-npx @godzillaba/mutest@latest
+npx @godzillaba/mutest@latest [-t '<cmd>']
 ```
 
 > **CRITICAL**: Do NOT pass a file list on subsequent passes. Passing file arguments causes mutest to **regenerate** mutants from scratch via Gambit, destroying the previous `gambit_out/` state.
