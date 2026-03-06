@@ -60,23 +60,35 @@ After mutest completes, read `gambit_out/survivors.json`. This is a JSON array i
 - `"diff"`: the exact code change
 - `"original"`: path to original source file
 
-If there are no survivors, skip to Step 2e.
+If there are no survivors, skip to Step 2f.
 
-### 2d: Analyze survivors and write fix tests
+### 2d: Analyze survivors (parallelized)
 
-For each surviving mutant:
+Use the Agent tool to analyze survivors **in parallel**. Spawn one subagent per surviving mutant (or per small batch if there are many). Each subagent receives:
 
-1. **Read source context**: Read the original source file around the mutated lines (parse line numbers from the diff `@@` header) to understand the function being mutated.
-2. **Analyze the gap**: Determine which function was mutated, what the mutation changed, and why no existing test caught it.
-3. **Write a fix test** (only if auto-fix is enabled):
-   - Find existing test files in `test-foundry/` that test the same contract. Prefer adding the new test to an existing relevant test file rather than creating a new one. Only create a new file if there's no natural home for the test.
-   - Write a focused Foundry test that would fail if the mutation were applied.
+- The mutant's `id`, `description`, `diff`, and `original` path.
+- Instructions to:
+  1. Read the original source file around the mutated lines (parse line numbers from the diff `@@` header) to understand the function being mutated.
+  2. Determine which function was mutated, what the mutation changed, and why no existing test caught it.
+  3. Return a structured analysis: mutant ID, source file, function name, mutation description, and coverage gap explanation.
+
+Collect all subagent results before proceeding.
+
+### 2e: Write fix tests (sequential)
+
+Skip this step if auto-fix is disabled.
+
+Using the collected analyses from 2d, write fix tests **sequentially** (one file at a time):
+
+1. Group analyzed mutants by source contract.
+2. For each group, find existing test files in `test-foundry/` that test the same contract. Prefer adding tests to an existing relevant test file rather than creating a new one.
+3. Write focused Foundry tests that would fail if the mutations were applied.
    - For library internal functions, create a harness contract that exposes them.
    - Every test function MUST have a comment: `/// TARGETS MUTANT #<id> in <source-file>`
    - ONLY write tests targeting specific surviving mutants. No bonus tests.
-4. **Verify fix tests**: Run `forge build --optimize false` then `forge test --optimize false --match-path <test-file>` to confirm they compile and pass against unmodified source. Fix any issues and retry.
+4. Run `forge build --optimize false` then `forge test --optimize false --match-path <test-file>` to confirm they compile and pass against unmodified source. Fix any issues and retry.
 
-### 2e: Write iteration report
+### 2f: Write iteration report
 
 Write a markdown report to `<prefix>-<iteration>.md`:
 
@@ -92,7 +104,7 @@ Write a markdown report to `<prefix>-<iteration>.md`:
 
 Tell the user the report path.
 
-### 2f: Decide whether to loop
+### 2g: Decide whether to loop
 
 If **loop-until-clean is disabled**, stop here.
 
