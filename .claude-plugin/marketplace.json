@@ -12,6 +12,12 @@
       "source": "./plugins/mutest",
       "description": "Run mutation testing on Solidity files.",
       "version": "1.3.0"
+    },
+    {
+      "name": "nitro-testnode",
+      "source": "./plugins/nitro-testnode",
+      "description": "Start an Arbitrum nitro-testnode and run tasks against it.",
+      "version": "0.1.0"
     }
   ]
 }
