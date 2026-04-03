@@ -56,7 +56,17 @@ cd /tmp/nitro-testnode-claude && ./test-node.bash --init-force [selected flags]
 
 Use the Bash tool with `run_in_background: true`. Do NOT wait for this command to exit — it runs indefinitely as it keeps the node alive.
 
-## Step 4: Wait for RPC endpoints
+## Step 4: Verify Docker containers are running
+
+After giving the background process ~30 seconds to start, verify that Docker containers were created:
+
+```
+cd /tmp/nitro-testnode-claude && docker compose ps --format json
+```
+
+Check that containers exist and are running. At minimum, expect containers for the L1 geth node and the L2 sequencer. If no containers are listed or they are in an error/exited state, fix the issue if trivial, otherwise show the user the background process output and stop.
+
+## Step 5: Wait for RPC endpoints
 
 Poll each required endpoint until it responds to `eth_chainId`. Check every 5 seconds, with a 20-minute timeout. Use curl:
 
@@ -78,7 +88,7 @@ Poll L1 first, then L2, then L3 (if applicable). A successful response contains 
 
 If the timeout is reached, show the user the background process output and stop.
 
-## Step 5: Execute the user's task
+## Step 6: Execute the user's task
 
 Once all endpoints are responding, announce:
 
