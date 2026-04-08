@@ -131,6 +131,10 @@ Available tools (via Bash with `gh` CLI):
 - gh search repos "<query>" --owner OffchainLabs --limit N
 - All support --json for structured output.
 
+For deeper code search: if the strategy identifies specific repos to search, you can shallow-clone them into /tmp and grep locally. This is faster and more flexible than gh search code for targeted searches.
+  git clone --depth 1 https://github.com/OffchainLabs/<repo>.git /tmp/<repo>
+Then use Grep/Glob on the cloned repo. Clean up with rm -rf /tmp/<repo> when done.
+
 Execute the strategy. Search code, issues, PRs, repos, or any combination as directed.
 
 Return a markdown list of findings grouped by type (only include types with results). Each entry: **Repo/Path or Title** (with URL if available), then a snippet or description. If nothing relevant, return "No GitHub results found."
