@@ -7,9 +7,17 @@ argument-hint: <search query>
 
 If $ARGUMENTS is empty, ask the user what they want to search for, then proceed.
 
-## Step 1 — Plan search strategies
+## Step 1 — Understand the query
 
-Analyze the user's query: **$ARGUMENTS**
+Interpret **$ARGUMENTS** in context. If the user is working in a project directory, briefly examine the codebase (README, package.json, CLAUDE.md, recent git history, directory structure — whatever is quick and relevant) to understand what the project is, what domain it operates in, and what terminology it uses. This helps you:
+
+- Expand ambiguous queries (e.g. "the bridge" → the specific bridge contract/system in this repo)
+- Add relevant keywords the user might not have typed (project names, component names, acronyms)
+- Understand which sources are most likely to have answers
+
+If the query is self-contained and doesn't benefit from project context, skip this.
+
+## Step 2 — Plan search strategies
 
 For each of the 5 sources below, decide a concrete search strategy tailored to the query. Consider:
 - What keywords, phrases, or filters will be most effective for this specific source?
@@ -28,7 +36,7 @@ Searching for: "<query>"
 - **GitHub (OffchainLabs)**: <strategy description>
 ```
 
-## Step 2 — Spawn parallel search agents
+## Step 3 — Spawn parallel search agents
 
 Spawn **5 agents in parallel** (all in a single message with 5 Agent tool calls), one per source. Use `run_in_background: true` for all agents.
 
@@ -128,10 +136,10 @@ Execute the strategy. Search code, issues, PRs, repos, or any combination as dir
 Return a markdown list of findings grouped by type (only include types with results). Each entry: **Repo/Path or Title** (with URL if available), then a snippet or description. If nothing relevant, return "No GitHub results found."
 ```
 
-## Step 3 — Compile results
+## Step 4 — Compile results
 
 Once all agents complete, compile a unified report organized by source. Omit sections with no results, but note which sources came up empty at the bottom.
 
-## Step 4 — Offer follow-up
+## Step 5 — Offer follow-up
 
 After presenting results, offer to read specific items in full or narrow the search.
