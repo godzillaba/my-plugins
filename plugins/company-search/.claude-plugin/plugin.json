@@ -1,5 +1,5 @@
 {
   "name": "company-search",
   "description": "Search company knowledge across Notion, Google Docs, Slack, Linear, and OffchainLabs GitHub repos.",
-  "version": "0.1.0"
+  "version": "0.2.0"
 }
